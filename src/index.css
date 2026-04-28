@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-800;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 font-semibold transition-all duration-300 hover:shadow-lg active:scale-95 rounded-2xl;
+  }
+  
+  .btn-brand {
+    @apply btn bg-gradient-to-r from-brand-500 to-brand-600 text-white hover:from-brand-600 hover:to-brand-700;
+  }
+  
+  .btn-light {
+    @apply btn bg-gradient-to-r from-brand-300 to-brand-400 text-gray-800 hover:from-brand-400 hover:to-brand-500;
+  }
+  
+  .btn-outline {
+    @apply btn bg-transparent border-2 border-brand-500 text-brand-600 hover:bg-brand-50;
+  }
+  
+  .card {
+    @apply bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 transition-all duration-300 hover:shadow-xl;
+  }
+  
+  .card-light {
+    @apply card bg-gradient-to-br from-brand-50 to-white;
+  }
+  
+  .input {
+    @apply w-full px-4 py-3 rounded-xl border-2 border-brand-200 bg-white/90 focus:outline-none focus:ring-4 focus:ring-brand-200/50 focus:border-brand-500 transition-all duration-300 text-gray-800 placeholder:text-gray-400;
+  }
+  
+  .heading {
+    @apply text-3xl font-bold bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent mb-6;
+  }
+  
+  .subheading {
+    @apply text-xl font-semibold text-gray-700 mb-4;
+  }
+  
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold;
+  }
+  
+  .badge-brand {
+    @apply badge bg-gradient-to-r from-brand-400 to-brand-500 text-white;
+  }
+  
+  .badge-light {
+    @apply badge bg-gradient-to-r from-brand-200 to-brand-300 text-brand-800;
+  }
+  
+  .scoop {
+    @apply rounded-full shadow-lg transition-transform duration-300 hover:scale-110;
+  }
+  
+  .cone {
+    @apply bg-gradient-to-b from-amber-200 to-amber-400 rounded-b-full;
+  }
+}
