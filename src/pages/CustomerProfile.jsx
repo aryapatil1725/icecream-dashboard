@@ -9,7 +9,8 @@ import {
   IceCream,
   Edit3,
   Save,
-  LogOut
+  LogOut,
+  AlertTriangle
 } from "lucide-react";
 
 export default function CustomerProfile() {
@@ -26,6 +27,7 @@ export default function CustomerProfile() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalSpent, setTotalSpent] = useState(0);
   const [memberSince, setMemberSince] = useState("");
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -112,9 +114,19 @@ export default function CustomerProfile() {
   };
 
   const handleLogout = () => {
+    setShowLogoutDialog(true);
+  };
+
+  const confirmLogout = () => {
     localStorage.removeItem("customerEmail");
     localStorage.removeItem("customerName");
+    localStorage.removeItem("customerCart");
+    setShowLogoutDialog(false);
     navigate("/Login");
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutDialog(false);
   };
 
   return (
@@ -156,6 +168,37 @@ export default function CustomerProfile() {
           </div>
         </div>
       </header>
+
+      {/* Logout Confirmation Dialog */}
+      {showLogoutDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 transform transition-all">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-100 flex items-center justify-center">
+                <AlertTriangle className="w-8 h-8 text-yellow-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Logout Confirmation</h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to logout? Your cart will be cleared.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={cancelLogout}
+                  className="flex-1 px-4 py-2.5 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmLogout}
+                  className="flex-1 px-4 py-2.5 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition-all"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

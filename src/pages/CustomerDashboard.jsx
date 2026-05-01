@@ -9,7 +9,8 @@ import {
   Search, 
   Plus,
   Heart,
-  Sparkles
+  Sparkles,
+  AlertTriangle
 } from "lucide-react";
 
 export default function CustomerDashboard() {
@@ -20,10 +21,17 @@ export default function CustomerDashboard() {
   const [favoriteProduct, setFavoriteProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const navigate = useNavigate();
 
   const customerName = localStorage.getItem("customerName") || "Guest";
   const customerEmail = localStorage.getItem("customerEmail");
+  
+  useEffect(() => {
+    console.log("CustomerDashboard loaded");
+    console.log("Customer email:", customerEmail);
+    console.log("Customer name:", customerName);
+  }, [customerEmail, customerName]);
 
   useEffect(() => {
     fetchProducts();
@@ -135,9 +143,19 @@ export default function CustomerDashboard() {
   );
 
   const handleLogout = () => {
+    setShowLogoutDialog(true);
+  };
+
+  const confirmLogout = () => {
     localStorage.removeItem("customerEmail");
     localStorage.removeItem("customerName");
+    localStorage.removeItem("customerCart");
+    setShowLogoutDialog(false);
     navigate("/Login");
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutDialog(false);
   };
 
   if (loading) {
@@ -201,12 +219,49 @@ export default function CustomerDashboard() {
         </div>
       </header>
 
-      <div className="bg-gradient-to-r from-brand-500 to-brand-700 py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">
+      {/* Logout Confirmation Dialog */}
+      {showLogoutDialog && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-md w-full mx-4 transform transition-all">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-100 flex items-center justify-center">
+                <AlertTriangle className="w-8 h-8 text-yellow-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Logout Confirmation</h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to logout? Your cart will be cleared.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={cancelLogout}
+                  className="flex-1 px-4 py-2.5 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmLogout}
+                  className="flex-1 px-4 py-2.5 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition-all"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div 
+        className="relative py-16 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/icecream-hero.jpg')`
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-500/80 to-brand-700/80"></div>
+        <div className="relative max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-white mb-3 drop-shadow-lg">
             Welcome, {customerName}!
           </h2>
-          <p className="text-white/90 text-sm mb-4">
+          <p className="text-white/95 text-base mb-6 drop-shadow-md">
             Discover our delicious ice cream flavors
           </p>
           
@@ -217,7 +272,7 @@ export default function CustomerDashboard() {
               placeholder="Search flavors..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white/95 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-brand-300 transition-all text-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-white/95 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-300 transition-all text-sm"
             />
           </div>
         </div>
@@ -262,7 +317,7 @@ export default function CustomerDashboard() {
                     className="w-full py-2 bg-brand-500 text-white rounded-lg font-semibold hover:bg-brand-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-1"
                   >
                     <Plus className="w-3 h-3" />
-                    Add
+ground                    Add
                   </button>
                 </div>
               </div>
